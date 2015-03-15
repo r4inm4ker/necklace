@@ -10,11 +10,10 @@ def create():
     numSample = 15
 
     necklaceNode.numSample.set(numSample)
-    necklaceNode.upVector2.set(1)
+    necklaceNode.upVector.set(0,0,1)
 
     for idx in range(numSample):
         geo = pm.duplicate('axisgeo')[0]
-
         pm.connectAttr(necklaceNode.outPosition[idx].outPosition,geo.translate)
         pm.connectAttr(necklaceNode.outRotation[idx].outRotation,geo.rotate)
   
