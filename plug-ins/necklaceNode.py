@@ -32,7 +32,7 @@ class Necklace(omMPx.MPxNode):
     uShift = om.MObject()
     numSample = om.MObject()
     outPosition = om.MObject()
-    outRotations = om.MObject()
+    outRotation = om.MObject()
     isLoop = om.MObject()
 
     def __init__(self):
@@ -179,19 +179,19 @@ class Necklace(omMPx.MPxNode):
 
             eulerRot = finalMat.eulerRotation()
 
-            rotx = om.MAngle(eulerRot.x).asDegrees()
-            roty = om.MAngle(eulerRot.y).asDegrees()
-            rotz = om.MAngle(eulerRot.z).asDegrees()
-
             outHandle = posBuilder.addElement(idx)
             outHandle.set3Double(pos.x, pos.y, pos.z)
 
             outHandle = rotBuilder.addElement(idx)
-            outHandle.set3Double(rotx, roty, rotz)
+            child = outHandle.child(Necklace.outRotationX)
+            child.setMAngle(om.MAngle(eulerRot.x))
+            child = outHandle.child(Necklace.outRotationY)
+            child.setMAngle(om.MAngle(eulerRot.y))
+            child = outHandle.child(Necklace.outRotationZ)
+            child.setMAngle(om.MAngle(eulerRot.z))
 
         pOutArray.set(posBuilder)
         rOutArray.set(rotBuilder)
-
         pOutArray.setAllClean()
         rOutArray.setAllClean()
 
@@ -206,6 +206,7 @@ def nodeInitializer():
     nAttr = om.MFnNumericAttribute()
     tAttr = om.MFnTypedAttribute()
     eAttr = om.MFnEnumAttribute()
+    uAttr = om.MFnUnitAttribute()
     inputAffects = []
     outputAffects = []
 
@@ -273,7 +274,13 @@ def nodeInitializer():
     Necklace.addAttribute(Necklace.uShift)
     inputAffects.append(Necklace.uShift)
 
-    Necklace.outPosition = nAttr.create("outPosition", "oup", om.MFnNumericData.k3Double)
+    Necklace.outPositionX = nAttr.create("outPositionX", "oux", om.MFnNumericData.kDouble)
+    nAttr.setStorable(False)
+    Necklace.outPositionY = nAttr.create("outPositionY", "ouy", om.MFnNumericData.kDouble)
+    nAttr.setStorable(False)
+    Necklace.outPositionZ = nAttr.create("outPositionZ", "ouz", om.MFnNumericData.kDouble)
+    nAttr.setStorable(False)
+    Necklace.outPosition = nAttr.create("outPosition", "oup", Necklace.outPositionX, Necklace.outPositionY, Necklace.outPositionZ)
     nAttr.setArray(True)
     nAttr.setStorable(False)
     nAttr.setHidden(False)
@@ -283,7 +290,13 @@ def nodeInitializer():
     Necklace.addAttribute(Necklace.outPosition)
     outputAffects.append(Necklace.outPosition)
 
-    Necklace.outRotation = nAttr.create("outRotation", "our", om.MFnNumericData.k3Double)
+    Necklace.outRotationX = uAttr.create("outRotationX", "orx", om.MFnUnitAttribute.kAngle)
+    uAttr.setStorable(False)
+    Necklace.outRotationY = uAttr.create("outRotationY", "ory", om.MFnUnitAttribute.kAngle)
+    uAttr.setStorable(False)
+    Necklace.outRotationZ = uAttr.create("outRotationZ", "orz", om.MFnUnitAttribute.kAngle)
+    uAttr.setStorable(False)
+    Necklace.outRotation = nAttr.create("outRotation", "our", Necklace.outRotationX, Necklace.outRotationY, Necklace.outRotationZ)
     nAttr.setArray(True)
     nAttr.setStorable(False)
     nAttr.setHidden(False)
