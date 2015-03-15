@@ -6,7 +6,6 @@ def loadPlugin():
 
 def attachNecklace(curveNode):
     curveNode = pm.PyNode(curveNode)
-    curveNode.scale.set(4,4,4)
 
     loadPlugin()
     necklaceNode = pm.createNode('necklace')
