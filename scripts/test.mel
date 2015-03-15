@@ -1,0 +1,25 @@
+loadPlugin("necklaceNode.py");
+
+global proc create()
+{
+    $tmp = `circle`;
+    $curve = $tmp[0];
+
+    $necklace = `createNode "necklace"`;
+
+    connectAttr ($curve+".worldSpace") ($necklace+".inputCurve");
+
+    
+    setAttr ($necklace+".numSample") 5;
+    
+    print (`getAttr ($necklace+".outPosition[1].outPositionX")` +"\n");
+    print (`getAttr ($necklace+".outPosition[1].outPositionY")` +"\n");
+    print (`getAttr ($necklace+".outPosition[1].outPositionZ")` +"\n");
+    
+    print (`getAttr ($necklace+".outRotation[1].outRotationX")` +"\n");
+    print (`getAttr ($necklace+".outRotation[1].outRotationY")` +"\n");
+    print (`getAttr ($necklace+".outRotation[1].outRotationZ")` +"\n");
+    
+}
+
+create();
