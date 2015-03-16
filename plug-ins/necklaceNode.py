@@ -29,6 +29,7 @@ class Necklace(omMPx.MPxNode):
     frontAxis = om.MObject()
     upAxis = om.MObject()
     twist = om.MObject()
+    globUShift = om.MObject()
     uShift = om.MObject()
     numSample = om.MObject()
     outPosition = om.MObject()
@@ -85,6 +86,9 @@ class Necklace(omMPx.MPxNode):
         handle = data.inputValue(Necklace.twist)
         twist = handle.asDouble()
 
+        handle = data.inputValue(Necklace.globUShift)
+        globUShift = handle.asDouble()
+
         handle = data.inputValue(Necklace.numSample)
         nSample = handle.asInt()
 
@@ -124,7 +128,7 @@ class Necklace(omMPx.MPxNode):
             handle = uShiftArray.inputValue()
             currShift = handle.asDouble()
 
-            param = self.getParamFromLength(curveFn, currLen + currShift, maxLength, isLoopEnabled)
+            param = self.getParamFromLength(curveFn, currLen + currShift + globUShift, maxLength, isLoopEnabled)
             curveFn.getPointAtParam(param, pt)
             currLen += increment
 
@@ -270,7 +274,14 @@ def nodeInitializer():
     Necklace.addAttribute(Necklace.numSample)
     inputAffects.append(Necklace.numSample)
 
-    Necklace.uShift = nAttr.create("uVal", "u", om.MFnNumericData.kDouble, 0.0)
+    Necklace.globUShift = nAttr.create("globalUShift", "gu", om.MFnNumericData.kDouble, 0.0)
+    nAttr.setStorable(True)
+    nAttr.setKeyable(True)
+    nAttr.setConnectable(True)
+    Necklace.addAttribute(Necklace.globUShift)
+    inputAffects.append(Necklace.globUShift)
+
+    Necklace.uShift = nAttr.create("uShift", "u", om.MFnNumericData.kDouble, 0.0)
     nAttr.setArray(True)
     nAttr.setStorable(True)
     nAttr.setKeyable(True)
