@@ -1,0 +1,19 @@
+// necklace setup mel
+// author: Jefri Haryono	
+// email : jefri.yeh@gmail.com
+
+global proc necklaceSetup()
+{
+    global string $gShelfTopLevel;
+
+    if (`tabLayout -exists $gShelfTopLevel`)
+    {
+        shelfButton
+            -parent ($gShelfTopLevel + "|" + `tabLayout -q -st $gShelfTopLevel`)
+            -image "necklace_icon.png"
+            -label "necklace UI"
+            -command "import necklace.gui as ngui;ngui.launch()"
+			-sourceType "python"
+        ;
+    }
+}

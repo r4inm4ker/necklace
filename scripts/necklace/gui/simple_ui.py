@@ -49,7 +49,7 @@ class NecklaceSimpleUI():
         win.show()
 
     @classmethod
-    def show(cls):
+    def launch(cls):
         inst = cls().ui()
 
 
@@ -93,3 +93,6 @@ class NecklaceSimpleUI():
                 pm.connectAttr(necklaceNode.outRotation[idx].outRotation, geo.rotate)
 
                 pm.parent(geo, tmpGrp)
+
+def launch():
+    NecklaceSimpleUI.launch()
