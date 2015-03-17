@@ -1,18 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# @Author: Jefri Haryono
+# @Email : jefri.yeh@gmail.com
 
-#######################################################
-# necklaceNode.py
-# Original Author: Jefri Haryono
-#
-
-###############################################################################
-# Module docstring
-###############################################################################
-u"""a plugin node that generate points and orientations on curve."""
+"""a plugin node that generate points and orientations on curve."""
 
 import sys
-
 import maya.OpenMayaMPx as omMPx
 import maya.OpenMaya as om
 

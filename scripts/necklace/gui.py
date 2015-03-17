@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Author: Jefri Haryono
+# @Email : jefri.yeh@gmail.com
+
 import pymel.core as pm
 import necklace.lib as nlib
 
