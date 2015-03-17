@@ -28,6 +28,7 @@ class Necklace(omMPx.MPxNode):
     outPosition = om.MObject()
     outRotation = om.MObject()
     isLoop = om.MObject()
+    onEndPoint = om.MObject()
 
     def __init__(self):
         omMPx.MPxNode.__init__(self)
@@ -50,11 +51,14 @@ class Necklace(omMPx.MPxNode):
         return curveFn.findParamFromLength(currLength)
 
     @staticmethod
-    def _getIncrement(nSample, maxLength):
+    def _getIncrement(nSample, maxLength,isOnEndPoint):
         if nSample < 2:
-            addLen = maxLength
+            addLen = 0
         else:
-            addLen = maxLength / (nSample - 1)
+            if isOnEndPoint:
+                addLen = maxLength / (nSample - 1)
+            else:
+                addLen = maxLength / nSample
 
         return addLen
 
@@ -88,6 +92,9 @@ class Necklace(omMPx.MPxNode):
         handle = data.inputValue(Necklace.isLoop)
         isLoopEnabled = handle.asBool()
 
+        handle = data.inputValue(Necklace.onEndPoint)
+        isOnEndPoint = handle.asBool()
+
         # prepare outputs
         pOutArray = data.outputArrayValue(Necklace.outPosition)
         rOutArray = data.outputArrayValue(Necklace.outRotation)
@@ -115,7 +122,7 @@ class Necklace(omMPx.MPxNode):
 
         pt = om.MPoint()
         currLen = 0
-        increment = self._getIncrement(nSample, maxLength)
+        increment = self._getIncrement(nSample, maxLength,isOnEndPoint)
         for idx in range(nSample):
             uShiftArray.jumpToElement(idx)
             handle = uShiftArray.inputValue()
@@ -258,6 +265,15 @@ def nodeInitializer():
     nAttr.setConnectable(True)
     Necklace.addAttribute(Necklace.isLoop)
     inputAffects.append(Necklace.isLoop)
+
+    Necklace.onEndPoint = nAttr.create("onEndPoint", "oep", om.MFnNumericData.kBoolean)
+    nAttr.setStorable(True)
+    nAttr.setKeyable(True)
+    nAttr.setConnectable(True)
+    Necklace.addAttribute(Necklace.onEndPoint)
+    inputAffects.append(Necklace.onEndPoint)
+
+
 
     Necklace.numSample = nAttr.create("numSample", "ns", om.MFnNumericData.kLong, 1)
     nAttr.setMin(0)
